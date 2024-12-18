@@ -88,20 +88,20 @@ function rowToDictionary(row){
         lon = parts[17].trim()
         // D,PCPTOTL      ,D,PCP5M        ,D,PCP15M       ,D,PCP1H        ,D,PCP3H        ,D,PCP6H        ,D,PCP12H       ,D,PCP18H       ,D,PCP24H       
         //,D,PCPRATE      ,D,PCPINT_1     ,D,PCPINT_2     ,D,PCPTYPE_1    ,D,PCPTYPE_2    ,D,DDGUST       ,D,FFGUST       ,D,ELEV         ,D,
-        pcptotl = parts[19].trim()
-        pcp5m = parts[21].trim()
-        pcp15m = parts[23].trim()
-        pcp1h = parts[25].trim()
-        pcp3h = parts[27].trim()
-        pcp6h = parts[29].trim()
-        pcp12h = parts[31].trim()
-        pcp18h = parts[33].trim()
+        pcptotl = parts[19].trim() // Units: m Unknown duration and depends on platform so basically useless. 
+        pcp5m = parts[21].trim() // Units: m
+        pcp15m = parts[23].trim() // Units: m
+        pcp1h = parts[25].trim() // Units: m
+        pcp3h = parts[27].trim() // Units: m
+        pcp6h = parts[29].trim() // Units: m
+        pcp12h = parts[31].trim() // Units: m
+        pcp18h = parts[33].trim() // Units: m
         pcp24h = parts[35].trim()
-        pcprate = parts[37].trim()
-        pcpint1 = parts[39].trim()
-        pcpint2 = parts[41].trim()
-        pcptype1 = parts[43].trim()
-        pcptype2 = parts[45].trim()
+        pcprate = parts[37].trim() // Units: kg/(m**2)/s
+        pcpint1 = parts[39].trim() // Units: code
+        pcpint2 = parts[41].trim() // Units: code
+        pcptype1 = parts[43].trim() // Units: code
+        pcptype2 = parts[45].trim() // Units: code
         wind_gust_dirction = parts[47].trim()
         wind_gust_speed = parts[49].trim()
         elevation = parts[51].trim()
@@ -120,9 +120,14 @@ function rowToDictionary(row){
             'wind_speed_ms': wind_speed == ''? null: parseFloat(wind_speed),
             'wind_direction': wind_direction == ''? null:parseFloat(wind_direction),
             'wind_gust': wind_gust_speed == ''? null: parseFloat(wind_gust_speed),
-            'precipitation': pcptotl == ''? null: parseFloat(pcptotl),
+            'precipitation_mm': pcp1h == ''? null: parseFloat(pcp1h)*1000,
+            'precipitation_3hr_mm': pcp3h == ''? null: parseFloat(pcp3h)*1000,
+            'precipitation_6hr_mm': pcp6h == ''? null: parseFloat(pcp6h)*1000,
+            'precipitation_24hr_mm': pcp24h == ''? null: parseFloat(pcp24h)*1000,
             'source': 'MADIS',
-            'raw': row
+            'raw': row,
+            'h3_index':null,
+            'md5_hash': null
         }
         
         if(obsIsValid(obs)){
@@ -132,6 +137,7 @@ function rowToDictionary(row){
     }
 }
 const access_t = new Date();
+
 (async (url) => {
     const browser = await puppeteer.launch({headless: true, args:['--no-sandbox']})
     const page = await browser.newPage()

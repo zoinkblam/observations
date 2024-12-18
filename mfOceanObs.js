@@ -95,9 +95,14 @@ function dictionaryToObs(data, row){
             'wind_speed_ms': spd,
             'wind_direction': dir,
             'wind_gust':null,
-            'precipitation': null,
+            'precipitation_mm': null,
+            'precipitation_3hr_mm': null,
+            'precipitation_6hr_mm': null,
+            'precipitation_24hr_mm': null,
             'source': 'mfocean',
-            'raw': row
+            'raw': row,
+            'h3_index':null,
+            'md5_hash': null
         }
         if(obsIsValid(obs)){
             return obs

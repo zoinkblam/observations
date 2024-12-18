@@ -43,9 +43,14 @@ function dictionaryToObs(data, row){
             'wind_speed_ms': null,
             'wind_direction': null,
             'wind_gust': null,
-            'precipitation': null,
+            'precipitation_mm': null,
+            'precipitation_3hr_mm': null,
+            'precipitation_6hr_mm': null,
+            'precipitation_24hr_mm': null,
             'source':'buoys',
-            'raw': row
+            'raw': row,
+            'h3_index':null,
+            'md5_hash': null
         }
         
         if('ATMP' in data){
@@ -58,6 +63,9 @@ function dictionaryToObs(data, row){
         }
         if('WSPD' in data){
             obs['wind_speed_ms'] = parseFloat(data['WSPD']['value'])
+        }
+        if('GST' in data){
+            obs['wind_gust'] = parseFloat(data['GST']['value'])
         }
 
         if(obsIsValid(obs)){

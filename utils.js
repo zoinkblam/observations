@@ -71,7 +71,7 @@ function obsIsValid(obs){
 
 function formatObservation(access_time, observation){
 
-    keys = ['latitude', 'longitude', 'elevation_m', 'temperature_c', 'wind_speed_ms', 'wind_direction', 'wind_gust', 'precipitation']
+    keys = ['latitude', 'longitude', 'elevation_m', 'temperature_c', 'wind_speed_ms', 'wind_direction', 'wind_gust', 'precipitation_mm']
     keys.forEach(k => {
        
         if(fieldIsValid(observation[k]) && isFloat(observation[k])){
@@ -105,7 +105,10 @@ function getEmptyObs(){
         'wind_speed_ms': '',
         'wind_direction': '',
         'wind_gust': '',
-        'precipitation': '',
+        'precipitation_mm': '',
+        'precipitation_3hr_mm':'',
+        'precipitation_6hr_mm': '',
+        'precipitation_24hr_mm': '',
         'source': '',
         'raw':'',
         'h3_index':'',
@@ -120,7 +123,7 @@ function outputResults(filename, access_time, observationList){
     observationList.forEach(o => {
         formatObservation(access_time, o)
     })
-    writeObservations(observationList)
+    //writeObservations(observationList)
     toGeoJson(filename, observationList)
     toKML(filename, observationList)
     toCSV(filename, observationList)

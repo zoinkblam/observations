@@ -45,7 +45,15 @@ function dictionaryToObs(data, row){
     wind_direction = data.wind_dir_degrees== '' ? null: parseFloat(data.wind_dir_degrees)
     wind_gust_speed = data.wind_gust_kt == '' ? null: parseFloat(data.wind_gust_kt)/1.944
     wind_gust_direction = -1
-    pcptotl = data.precip_in == '' ? null: parseFloat(data.precip_in)
+    pcptotl = data.precip_in == '' ? null: parseFloat(data.precip_in)*25.4
+
+    precip_3hr = data.pcp3hr_in == '' ? null: parseFloat(data.pcp3hr_in)*25.4
+    precip_6hr = data.pcp6hr_in == '' ? null: parseFloat(data.pcp6hr_in)*25.4
+    precip_24hr = data.pcp24hr_in == '' ? null: parseFloat(data.pcp24hr_in)*25.4    
+
+     // pcp3hr_in: '',
+    // pcp6hr_in: '',
+    // pcp24hr_in: '',
    
     // observation_time: '2024-12-06T10:36:00Z',
     // latitude: '34.047',
@@ -94,9 +102,14 @@ function dictionaryToObs(data, row){
         'wind_speed_ms': wind_speed,
         'wind_direction': wind_direction,
         'wind_gust':wind_gust_speed,
-        'precipitation': pcptotl,
+        'precipitation_mm': pcptotl,
+        'precipitation_3hr_mm': precip_3hr,
+        'precipitation_6hr_mm': precip_6hr,
+        'precipitation_24hr_mm': precip_24hr,
         'source': 'metar', 
-        'raw': row
+        'raw': row, 
+        'h3_index':null,
+        'md5_hash': null
     }
    
     if(obsIsValid(obs)){
